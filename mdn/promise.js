@@ -31,3 +31,36 @@ Promise.all([fetchPromise1, fetchPromise2, fetchPromise3])
   .catch((error) => {
     console.error(`Failed to fetch: ${error}`)
 });
+
+
+const fetchPromise4 = fetch('https://mdn.github.io/learning-area/javascript/apis/fetching-data/can-store/products.json');
+const fetchPromise5 = fetch('https://mdn.github.io/learning-area/javascript/apis/fetching-data/can-store/not-found');
+const fetchPromise6 = fetch('https://mdn.github.io/learning-area/javascript/oojs/json/superheroes.json');
+
+Promise.any([fetchPromise4, fetchPromise5, fetchPromise6])
+  .then((response) => {
+    console.log(`${response.url}: ${response.status}`);
+  })
+  .catch((error) => {
+    console.error(`Failed to fetch: ${error}`)
+});
+
+async function fetchProducts() {
+    try {
+      const response = await fetch('https://mdn.github.io/learning-area/javascript/apis/fetching-data/can-store/products.json');
+      if (!response.ok) {
+        throw new Error(`HTTP error: ${response.status}`);
+      }
+      // この行の後、この関数は `response.json()` 呼び出しが決定されるのを待ちます。
+      // `response.json()` 呼び出しは、解釈された JSON オブジェクトを返すか、エラーを発生させるかのどちらかです。
+      const data = await response.json();
+      return data;
+    }
+    catch (error) {
+      console.error(`Could not get products: ${error}`);
+    }
+}
+  
+// fetchProducts();
+const promise = fetchProducts();
+promise.then((data) => console.log(data[0].name));
