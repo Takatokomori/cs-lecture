@@ -12,3 +12,6 @@ fetchPromise
             console.log(element.name);
         });
     })
+    .catch((error)=>{
+        console.log(`Couldn't get products: ${error}`);
+    })
